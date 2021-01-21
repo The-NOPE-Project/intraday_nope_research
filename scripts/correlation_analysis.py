@@ -5,6 +5,7 @@ from dateutil import parser
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import statistics
+from simple_backtest_reversions import backtest_long
 
 DATA_PATH = '../processed_data/'
 
