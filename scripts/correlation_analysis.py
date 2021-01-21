@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import statistics
 
+from scripts.simple_backtest_reversions import backtest_long
+
 DATA_PATH = '../processed_data/'
 
 all_data = pd.read_csv(DATA_PATH + 'allDataCombined.csv')
