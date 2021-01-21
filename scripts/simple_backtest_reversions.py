@@ -8,13 +8,9 @@ import statistics
 from collections import defaultdict
 import json
 
-DATA_PATH = '../processed_data/'
+from data_prep import gen_df
+df = gen_df()
 
-all_data = pd.read_csv(DATA_PATH + 'allDataCombined.csv')
-price_data = pd.read_csv(DATA_PATH + 'priceData.csv')
-df = pd.merge(all_data, price_data, on="timestamp")
-df['date'] = df['timestamp'].apply(lambda x: parser.parse(x).date())
-df['time'] = df['timestamp'].apply(lambda x: parser.parse(x).strftime("%H:%M:%S"))
 corr = []
 corr_all = []
 pnl = defaultdict(list)

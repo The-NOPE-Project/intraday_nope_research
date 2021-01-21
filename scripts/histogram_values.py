@@ -8,13 +8,9 @@ import statistics
 import statsmodels.tsa.stattools as ts
 from collections import defaultdict
 
-DATA_PATH = '../processed_data/'
+from data_prep import gen_df
+df = gen_df()
 
-df = pd.read_csv(DATA_PATH + 'allDataCombined.csv')
-#price_data = pd.read_csv(DATA_PATH + 'priceData.csv')
-#df = pd.merge(all_data, price_data, on="timestamp")
-df['date'] = df['timestamp'].apply(lambda x: parser.parse(x).date())
-df['time'] = df['timestamp'].apply(lambda x: parser.parse(x).strftime("%H:%M:%S"))
 eod_nope = df[df['time'] == '16:00:00']['NOPE_busVolume']*100
 intraday_nope = df[df['time'] < '15:30:00']['NOPE_busVolume']*100
 dic = defaultdict(float)

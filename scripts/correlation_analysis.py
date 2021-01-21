@@ -7,12 +7,9 @@ import matplotlib.dates as mdates
 import statistics
 from simple_backtest_reversions import backtest_long
 
-DATA_PATH = '../processed_data/'
+from data_prep import gen_df
+df = gen_df()
 
-all_data = pd.read_csv(DATA_PATH + 'allDataCombined.csv')
-price_data = pd.read_csv(DATA_PATH + 'priceData.csv')
-df = pd.merge(all_data, price_data, on="timestamp")
-df['date'] = df['timestamp'].apply(lambda x: parser.parse(x).date())
 corr = []
 corr_all = []
 dates = []
