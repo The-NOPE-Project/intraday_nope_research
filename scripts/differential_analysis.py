@@ -10,7 +10,7 @@ import statistics
 DATA_PATH = '../processed_data/'
 
 price_data = pd.read_csv(DATA_PATH + 'priceData.csv')
-nope_data = pd.read_csv(DATA_PATH + 'parsedNetDelta2020-11.csv')
+nope_data = pd.read_csv(DATA_PATH + 'parsedNetDelta2020-08.csv')
 df = pd.merge(nope_data, price_data, on="timestamp")
 
 deltaNope = 0.0
@@ -20,6 +20,7 @@ lastNope = 0.0
 lastDNope = 0.0
 lastDNope2 = 0.0
 lastPrice = 0.0
+dPriceLag = []
 
 for index, row in df.iterrows():
 
@@ -64,14 +65,14 @@ for index, row in df.iterrows():
         dNopeRaw = df['NOPE_allVolume'].to_numpy()
 
         # shift the data back by 1
-        dPriceLag = np.insert(dPrice, 0, 0)
-        dPriceLag = np.delete(dPriceLag, dPriceLag.size-1, 0)
+        dPriceLag = np.delete(dPrice, 0, 0)
+        dPriceLag = np.insert(dPriceLag, dPriceLag.size - 1, 0)
 
         # shift the data back by 2
-        dPriceLag2 = np.insert(dPrice, 0, 0)
-        dPriceLag2 = np.insert(dPriceLag2, 0, 0)
-        dPriceLag2 = np.delete(dPriceLag2, dPriceLag2.size - 1, 0)
-        dPriceLag2 = np.delete(dPriceLag2, dPriceLag2.size - 1, 0)
+        dPriceLag2 = np.delete(dPrice, 0, 0)
+        dPriceLag2 = np.delete(dPriceLag2, 0, 0)
+        dPriceLag2 = np.insert(dPriceLag2, dPriceLag2.size - 1, 0)
+        dPriceLag2 = np.insert(dPriceLag2, dPriceLag2.size - 1, 0)
 
         # compute our various correlations
         dN_dP = stats.spearmanr(dNope, dPrice)
@@ -104,12 +105,13 @@ for index, row in df.iterrows():
     lastDNope2 = deltaNope2
 
 fig, axs = plt.subplots(3, 1)
-fig.suptitle('Spearman R Rank Correlation \n SPY Intra-day deltaNope vs. deltaPrice November 2020')
+fig.suptitle('Spearman R Rank Correlation \n SPY Intra-day deltaNope vs. deltaPrice August 2020')
 
-#axs[0].scatter(df['timestamp'], df['deltaNope'], 2, 'red', label='dNope/dt')
-#axs[0].scatter(df['timestamp'], df['deltaNope2'], 2, 'yellow', label='dNope2/d2t')
-#axs[0].scatter(df['timestamp'], df['dN-dN2'], 2, 'pink', label='dNope/dt - est_dNope2/d2t')
-#axs[0].scatter(df['timestamp'], df['deltaPrice'], 2, 'blue', label='dPrice/dt')
+#axs[3].scatter(df['timestamp'], df['deltaNope'], 2, 'red', label='dNope/dt')
+#axs[3].scatter(df['timestamp'], df['deltaNope2'], 2, 'yellow', label='dNope2/d2t')
+#axs[3].scatter(df['timestamp'], df['dN-dN2'], 2, 'pink', label='dNope/dt - est_dNope2/d2t')
+#axs[3].scatter(df['timestamp'], df['deltaPrice'], 2, 'blue', label='dPrice/dt')
+#axs[3].scatter(df['timestamp'], dPriceLag2, 2, 'pink', label='dPrice/dt')
 
 axs[0].plot(df['timestamp'], df['corr'], 'green', label='Cor(dNope(T),dPrice(T))')
 axs[0].plot(df['timestamp'], df['corrLag'], 'orange', label='Cor(dNope(T), dPrice(T+5))')
