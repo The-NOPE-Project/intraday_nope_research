@@ -1,0 +1,8 @@
+
+.gitignore~
+.gitignore
+.DS_Store
+.env
+#Locally compiled scripts
+scripts/.histogram_values.py.un~
+scripts/histogram_values.py~
