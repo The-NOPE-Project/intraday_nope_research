@@ -44,6 +44,8 @@ df['deltaPrice+5'].fillna(0.0 ,inplace = True)
 df['deltaPrice+10'] = df['deltaPrice'].shift(-2)
 df['deltaPrice+10'].fillna(0.0 ,inplace = True)
 
+# use a split interpolate on the second order to function as the modeled second order
+# this is a reduction of cubic spline interpolation used in forward forecasting signal processing
 df['dN-dN2'] = df.apply(lambda x: x['deltaNope'] - (0.5*x['deltaNope2Prev'] - 0.5*x['deltaNope2']), axis=1)
 df['dN-dN2'].fillna(0.0 ,inplace = True)
 print(df)
@@ -66,39 +68,23 @@ for index, row in df.iterrows():
             continue
 
 
-        # use a split interpolate on the second order to function as the modeled second order
-        # this is a reduction of cubic spline interpolation used in forward forecasting signal processing
+
         #df.at[index, 'dN-dN2'] = deltaNope - (0.5*lastDNope2 - 0.5*deltaNope2)
 
-        # process data up to the latest data entry
+        # process data up to the latest data entry for the current month
         dNope = df[(df['timestamp'] <= filterDatetime) & (df['timestamp'] >= monthDateTime)]['deltaNope'].to_numpy()
-        # where_are_NaNs = isnan(dNope)
-        # dNope[where_are_NaNs] = 0.0
 
         dNope2 = df[(df['timestamp'] <= filterDatetime) & (df['timestamp'] >= monthDateTime)]['deltaNope2'].to_numpy()
-        # where_are_NaNs = isnan(dNope2)
-        # dNope2[where_are_NaNs] = 0.0
 
         dN_sub_dN2 = df[(df['timestamp'] <= filterDatetime) & (df['timestamp'] >= monthDateTime)]['dN-dN2'].to_numpy()
-        # where_are_NaNs = isnan(dN_sub_dN2)
-        # dN_sub_dN2[where_are_NaNs] = 0.0
 
         dPrice = df[(df['timestamp'] <= filterDatetime) & (df['timestamp'] >= monthDateTime)]['deltaPrice'].to_numpy()
-        # where_are_NaNs = isnan(dPrice)
-        # dPrice[where_are_NaNs] = 0.0
 
         dNopeRaw = df[(df['timestamp'] <= filterDatetime) & (df['timestamp'] >= monthDateTime)]['NOPE_allVolume'].to_numpy()
-        # where_are_NaNs = isnan(dNopeRaw)
-        # dNopeRaw[where_are_NaNs] = 0.0
 
         dPrice_p5 = df[(df['timestamp'] <= filterDatetime) & (df['timestamp'] >= monthDateTime)]['deltaPrice+5'].to_numpy()
 
         dPrice_p10 = df[(df['timestamp'] <= filterDatetime) & (df['timestamp'] >= monthDateTime)]['deltaPrice+10'].to_numpy()
-        # dNope = df['deltaNope'].to_numpy()
-        # dNope2 = df['deltaNope2'].to_numpy()
-        # dN_sub_dN2 = df['dN-dN2'].to_numpy()
-        # dPrice = df['deltaPrice'].to_numpy()
-        # dNopeRaw = df['NOPE_allVolume'].to_numpy()
 
         df.at[index, 'corrLag'] = stats.spearmanr(dNope, dPrice_p5)[0]
         df.at[index, 'corrD2Lag'] = stats.spearmanr(dNope2, dPrice_p5)[0]
@@ -108,8 +94,6 @@ for index, row in df.iterrows():
         df.at[index, 'corrLag_2'] = stats.spearmanr(dNope, dPrice_p10)[0]
         df.at[index, 'corrD2Lag_2'] = stats.spearmanr(dNope2, dPrice_p10)[0]
         df.at[index, 'corrdN_sub_dN2_lag_2'] = stats.spearmanr(dN_sub_dN2, dPrice_p10)[0]
-
-        #print(dNope, dPrice, dPriceLag, dPriceLag2)
 
         # compute our various correlations
         dN_dP = stats.spearmanr(dNope, dPrice)
@@ -122,11 +106,12 @@ for index, row in df.iterrows():
         dN_dN2_dP = stats.spearmanr(dN_sub_dN2, dPrice)
         df.at[index, 'corrdN_sub_dN2'] = dN_dN2_dP[0]
 
+        # debug break to reduce processing time
         # if(row['timestamp'] > breakFilterDateTime):
         #     break
 
 fig, axs = plt.subplots(3, 1)
-fig.suptitle('Spearman R Rank Correlation \n SPY Intra-day deltaNope vs. deltaPrice August 2020')
+fig.suptitle('Spearman R Rank Correlation \n SPY Intra-day deltaNope vs. deltaPrice 2020')
 
 #axs[3].scatter(df['timestamp'], df['deltaNope'], 2, 'red', label='dNope/dt')
 #axs[3].scatter(df['timestamp'], df['deltaNope2'], 2, 'yellow', label='dNope2/d2t')
