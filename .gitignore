@@ -8,3 +8,4 @@ scripts/.histogram_values.py.un~
 scripts/histogram_values.py~
 .idea/*
 venv/*
+tmp/*
