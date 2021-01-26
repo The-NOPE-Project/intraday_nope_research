@@ -14,8 +14,8 @@ function getData()
 end
 
 function getNopeData()
-    dataFiles = ["../processed_data/parsedNetDelta2020-01.csv", "../processed_data/parsedNetDelta2020-02.csv","../processed_data/parsedNetDelta2020-03.csv","../processed_data/parsedNetDelta2020-04.csv","../processed_data/parsedNetDelta2020-05.csv","../processed_data/parsedNetDelta2020-06.csv","../processed_data/parsedNetDelta2020-07.csv","../processed_data/parsedNetDelta2020-08.csv","../processed_data/parsedNetDelta2020-10.csv","../processed_data/parsedNetDelta2020-11.csv"]
-    dataFiles = ["../processed_data//allDataCombined.csv"]
+    dataFiles = ["../../processed_data/parsedNetDelta2020-01.csv", "../processed_data/parsedNetDelta2020-02.csv","../processed_data/parsedNetDelta2020-03.csv","../processed_data/parsedNetDelta2020-04.csv","../processed_data/parsedNetDelta2020-05.csv","../processed_data/parsedNetDelta2020-06.csv","../processed_data/parsedNetDelta2020-07.csv","../processed_data/parsedNetDelta2020-08.csv","../processed_data/parsedNetDelta2020-10.csv","../processed_data/parsedNetDelta2020-11.csv"]
+    dataFiles = ["../../processed_data//allDataCombined.csv"]
     timestampToData = Dict{String, Float64}()
 
     for dataFile in dataFiles
@@ -36,7 +36,7 @@ function getNopeData()
 end
 
 function getPriceData()
-    (priceHeaders, priceColumns) = readFile("../processed_data/priceData.csv")
+    (priceHeaders, priceColumns) = readFile("../../processed_data/priceData.csv")
     timestampToData = Dict{String, Float64}()
     timestamp = priceHeaders[1]
     underlyingPrice = priceHeaders[2]
