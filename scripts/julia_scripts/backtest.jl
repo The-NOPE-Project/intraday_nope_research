@@ -96,15 +96,16 @@ function backtestLongNope()
     datasetOfInterest = Any[]#entry, exit, stopLoss, successrate, PNL
 
     println("Beginning Analysis")
-    for i in -120:5:-10
+    for i in -95:5:-10
         println("updated i ", "$i")
         for j in i+10:5:0
             #println("updated j ", "$i $j")
             #for k in j+10:10:150
                 longEntry = i
                 longExit = j
-                stopLoss = -1000
-
+                stopLoss = -100
+                stopDay = nothing
+                stoppedDay = false
                 values = Any[]
                 holdTimes = Float64[]
                 entryTime = nothing
@@ -131,7 +132,14 @@ function backtestLongNope()
                     nope = timestampToNope[date]*100
                     price = timestampToPrice[date]
 
-                    if nope <= longEntry && !tradeInProgress && time >= dayStartTime && time < dayEndTime && nope>stopLoss
+                    if !stoppedDay && nope <= stopLoss
+                        stoppedDay = true
+                        stopDay = Dates.day(datetime)
+                    elseif stoppedDay && Dates.day(datetime)!=stoppedDay
+                        stoppedDay = false
+                        stopDay = nothing
+                    end
+                    if nope <= longEntry && !tradeInProgress && time >= dayStartTime && time < dayEndTime && nope>stopLoss && !stoppedDay
                         entryPrice = [nope, date, price]
                         tradeInProgress = true
                         entryTime = time
