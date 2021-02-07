@@ -40,7 +40,7 @@ def gen_daily_minmax_nope():
 
     days = df['date'].unique()
 
-    with open("../processed_data/NOPE_daily_min.csv", 'w') as NOPE_MIN_CSV, open("../processed_data/NOPE_daily_max.csv", 'w') as NOPE_MAX_CSV:
+    with open("../processed_data/NOPE_min.csv", 'w') as NOPE_MIN_CSV, open("../processed_data/NOPE_max.csv", 'w') as NOPE_MAX_CSV:
         min_writer = csv.writer(NOPE_MIN_CSV)
         max_writer = csv.writer(NOPE_MAX_CSV)
 
