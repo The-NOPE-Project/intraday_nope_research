@@ -5,12 +5,12 @@ from matplotlib import pyplot as plt
 import numpy as np  
 
 DATA_PATH = "../processed_data/"
-LAGS = 30
+LAGS = 100
 
 def autocorrelateplot():
     # Must have generated the minmax csv's
-    min_df = pd.read_csv(DATA_PATH + 'NOPE_daily_min.csv')
-    max_df = pd.read_csv(DATA_PATH + 'NOPE_daily_max.csv')
+    min_df = pd.read_csv(DATA_PATH + 'NOPE_min.csv')
+    max_df = pd.read_csv(DATA_PATH + 'NOPE_max.csv')
     
     min_plot = plt.figure(0)
     min_data = min_df['Value']
