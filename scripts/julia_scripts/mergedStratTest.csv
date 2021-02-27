@@ -1,0 +1,2 @@
+short_entry,short_exit, long_entry, long_exit,success_rate,total_trades,total_PNL,mean_of_returns,median_of_returns,average_hold_time,median_hold_time
+30.0,15.0,-60.0,-40.0,0.7225130890052356,191.0,27.62900000000002,0.1446544502617802,0.4399999999999977,94.79057591623037,40.0

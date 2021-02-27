@@ -11,7 +11,7 @@ function backtestShortNope()
 
     #adjustable variables to edit trading day
     dayStartTime = Time("09:30")
-    dayEndTime = Time("16:00")
+    dayEndTime = Time("12:00")
     marketClose = Time("16:00")
 
     #data to be stored/written
@@ -104,7 +104,7 @@ function backtestLongNope()
     day = Dates.day(DateTime(orderedDates[1],dateFormat))
 
     dayStartTime = Time("09:30")
-    dayEndTime = Time("16:00")
+    dayEndTime = Time("12:00")
     marketClose = Time("16:00")
     datasetOfInterest = Any[]#entry, exit, stopLoss, successrate, PNL
 
