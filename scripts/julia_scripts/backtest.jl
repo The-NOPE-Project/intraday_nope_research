@@ -148,7 +148,7 @@ function backtestLongNope()
                     if !stoppedDay && nope <= stopLoss
                         stoppedDay = true
                         stopDay = Dates.day(datetime)
-                    elseif stoppedDay && Dates.day(datetime)!=stoppedDay
+                    elseif stoppedDay && Dates.day(datetime)!=stopDay
                         stoppedDay = false
                         stopDay = nothing
                     end
